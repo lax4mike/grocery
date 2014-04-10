@@ -42,16 +42,7 @@ var TodoView = module.exports = Backbone.View.extend({
         this.$el.on("transitionend webkitTransitionEnd OTransitionEnd", _.bind(function(){ 
             // this animation is 2 transitions (left, height)
             if (++transitions >= 2){
-
-                // show undo and set timeout to actually delete this item
-
-                new TrashNotificationView();
-
-                this.trashTimeout = setTimeout(_.bind(function(){
-                    // this.removeTodo();
-                    console.log("trashed! " + this);
-                }, this), 5000);
-                
+                this.removeTodo();                
             }
         }, this));
     },

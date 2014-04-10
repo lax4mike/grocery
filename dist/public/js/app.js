@@ -10,26 +10,6 @@ var TodoCollection = require('./todo/TodoCollection.js');
 var TodoModel = require('./todo/TodoModel.js');
 var TodoView = require('./todo/TodoView.js');
 
-
-
-
-var TrashNotificationView = Backbone.View.extend({
-
-    tagName:  'div',
-
-    initialize: function(){
-    
-        this.$el.addClass('trash-container');
-        
-        $('main').append(this.render().$el);
-
-
-    },
-
-
-});
-
-
 var todos = new TodoCollection();
 
 
@@ -210,16 +190,7 @@ var TodoView = module.exports = Backbone.View.extend({
         this.$el.on("transitionend webkitTransitionEnd OTransitionEnd", _.bind(function(){ 
             // this animation is 2 transitions (left, height)
             if (++transitions >= 2){
-
-                // show undo and set timeout to actually delete this item
-
-                new TrashNotificationView();
-
-                this.trashTimeout = setTimeout(_.bind(function(){
-                    // this.removeTodo();
-                    console.log("trashed! " + this);
-                }, this), 5000);
-                
+                this.removeTodo();                
             }
         }, this));
     },

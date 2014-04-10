@@ -9,26 +9,6 @@ var TodoCollection = require('./todo/TodoCollection.js');
 var TodoModel = require('./todo/TodoModel.js');
 var TodoView = require('./todo/TodoView.js');
 
-
-
-
-var TrashNotificationView = Backbone.View.extend({
-
-    tagName:  'div',
-
-    initialize: function(){
-    
-        this.$el.addClass('trash-container');
-        
-        $('main').append(this.render().$el);
-
-
-    },
-
-
-});
-
-
 var todos = new TodoCollection();
 
 
