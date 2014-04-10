@@ -1,0 +1,67 @@
+
+@mixin flexbox-display-flex {
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+}
+
+@mixin flexbox-flex($grow: 1, $shrink: 1, $basis: "auto") {
+    -webkit-box-flex: $grow $shrink $basis;
+    -moz-box-flex: $grow $shrink $basis;
+    -moz-flex: $grow $shrink $basis;
+    -webkit-flex: $grow $shrink $basis;
+    -ms-flex: $grow $shrink $basis;
+    flex: $grow $shrink $basis;
+}
+
+@mixin flexbox-justify-content($order) {
+    -webkit-justify-content: $order;
+           -webkit-box-pack: $order;
+              -moz-box-pack: $order;
+              -ms-flex-pack: $order;
+            justify-content: $order;
+}
+
+@mixin flexbox-align-items($value: center ) {
+    -webkit-align-items: $value;
+      -webkit-box-align: $value;
+         -moz-box-align: $value;
+         -ms-flex-align: $value;
+            align-items: $value;
+}
+
+@mixin linear-gradient($fromColor, $toColor) {
+  background-color: $toColor; /* Fallback Color */
+  background-image: -webkit-gradient(linear, left top, left bottom, from($fromColor), to($toColor)); /* Saf4+, Chrome */
+  background-image: -webkit-linear-gradient(top, $fromColor, $toColor); /* Chrome 10+, Saf5.1+, iOS 5+ */
+  background-image:    -moz-linear-gradient(top, $fromColor, $toColor); /* FF3.6 */
+  background-image:     -ms-linear-gradient(top, $fromColor, $toColor); /* IE10 */
+  background-image:      -o-linear-gradient(top, $fromColor, $toColor); /* Opera 11.10+ */
+  background-image:         linear-gradient(top, $fromColor, $toColor);
+  filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,StartColorStr='#{$fromColor}', EndColorStr='#{$toColor}');
+}
+
+@mixin appearance($value) {
+   -webkit-appearance: $value;
+      -moz-appearance: $value;
+           appearance: $value;
+}
+
+@mixin box-sizing($value) {
+   -webkit-box-sizing: $value; 
+      -moz-box-sizing: $value; 
+           box-sizing: $value;
+}
+
+@mixin transform($value) {
+
+  -webkit-transform: $value;
+     -moz-transform: $value;
+      -ms-transform: $value;
+       -o-transform: $value;
+          transform: $value;
+}
+
+
