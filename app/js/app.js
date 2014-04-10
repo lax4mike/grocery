@@ -1,83 +1,33 @@
 
-var $ = require('./jquery.js'); 
-var _ = require('./underscore.js');
-var Backbone = require('./backbone.js'); 
+var $ = require('jquery'); 
+var _ = require('underscore');
+var Backbone = require('backbone'); 
 Backbone.$ = $;
 
 
-// Todo Model
-var TodoModel = Backbone.Model.extend({
+var TodoCollection = require('./todo/TodoCollection.js');
+var TodoModel = require('./todo/TodoModel.js');
+var TodoView = require('./todo/TodoView.js');
 
-    defaults: {
-        text: '',
-        done: false
-    },
 
-    idAttribute: "_id"
 
-});
 
-// Todo Collection
-var TodoCollection = Backbone.Collection.extend({
+var TrashNotificationView = Backbone.View.extend({
 
-    model: TodoModel,
-
-    url: "/items/"
-
-}); 
-
-// Todo View
-var TodoView = Backbone.View.extend({
-
-    tagName:  'li',
+    tagName:  'div',
 
     initialize: function(){
+    
+        this.$el.addClass('trash-container');
+        
+        $('main').append(this.render().$el);
 
-        this.listenTo(this.model, 'trash', this.trashTodo);
 
     },
 
-    template: _.template($('#todo-item-template').html()),
-
-    events: {
-        'change input[type=checkbox]': 'toggleCheckbox',
-        'click .remove': 'trashTodo',
-    },
-
-    toggleCheckbox: function(e){
-        var checked = this.$el.find('input[type=checkbox]').is(':checked');
-        this.$el.toggleClass("checked", checked);
-        this.model.set("done", checked);
-        this.model.save();
-    },
-
-    // animation
-    trashTodo: function(){
-        this.$el.addClass('trash');
-
-        var transitions = 0;
-
-        this.$el.on("transitionend webkitTransitionEnd OTransitionEnd", _.bind(function(){ 
-            // this animation is 2 transitions (left, height)
-            if (++transitions >= 2){
-                this.removeTodo();
-            }
-        }, this));
-    },
-
-    removeTodo: function(e) {
-
-        this.model.destroy();
-        this.remove();
-    },
-
-    render: function() {
-        this.$el.html(this.template(this.model.attributes));
-        this.toggleCheckbox();
-        return this;
-    },
 
 });
+
 
 var todos = new TodoCollection();
 

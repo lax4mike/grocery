@@ -9,6 +9,7 @@ $maxWidth: 600px;
 $footerHeight: 38px;
 $liHeight: 40px;
 $background: #f6f6f6;
+$blue: #1e7fad;
 
 html {
 	height: 100%;
@@ -65,7 +66,7 @@ header {
 		button.submit {
 			border-top-left-radius: 0;
 			border-bottom-left-radius: 0;
-			background: linear-gradient(top, #6699FF, #3366FF);
+			background: $blue;
 			flex: 0 0 auto;
 		}
 
@@ -87,27 +88,34 @@ main {
 }
 
 // fancy checkboxes
-
 input[type=checkbox] {
 	visibility: hidden;
 	vertical-align: middle;
 	display: inline-block;
-	width: 22px;
-	height: 22px;
+	width: 20px;
+	height: 20px;
 	margin: 0;
 
 	&::before {
 		content: "";
 		background: url(../img/blue.png) no-repeat;
-		background-position: 0;
+		background-position: -0px;
 		display: inline-block;
 		width: inherit;
 		height: inherit;
 		visibility: visible;
+	
+	}
+	
+	&:hover::before {
+		background-position: -20px;
 	}
 
 	&:checked::before {
-		background-position: -22px;
+		background-position: -40px;
+	}
+	&:checked:hover::before {
+		background-position: -60px;
 	}
 } 
 
