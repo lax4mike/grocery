@@ -2,6 +2,8 @@ var _ = require('underscore');
 var $ = require('jquery');
 var Backbone = require('backbone');
 
+var todoTemplate = require('./templates/todo.handlebars');
+
 // Todo View
 var TodoView = module.exports = Backbone.View.extend({
 
@@ -15,11 +17,11 @@ var TodoView = module.exports = Backbone.View.extend({
 
     trashTimeout: null,
 
-    template: _.template($('#todo-item-template').html()),
+    template: todoTemplate,
 
     events: {
         'change input[type=checkbox]': 'toggleCheckbox',
-        'click .remove': 'trashTodo',
+        'click .remove': 'removeClicked',
     },
 
     updateCheckbox: function(e) {
@@ -33,6 +35,11 @@ var TodoView = module.exports = Backbone.View.extend({
         this.model.save();
     },
 
+    removeClicked: function(e) {
+        this.trigger('removeClicked');
+        this.trashTodo();
+    },
+
     // animation
     trashTodo: function(){
         this.$el.addClass('trash');
@@ -40,17 +47,22 @@ var TodoView = module.exports = Backbone.View.extend({
         var transitions = 0;
 
         this.$el.on("transitionend webkitTransitionEnd OTransitionEnd", _.bind(function(){ 
-            // this animation is 2 transitions (left, height)
+            // this animation is 2 transitions (translateX(), height)
             if (++transitions >= 2){
-                this.removeTodo();                
+
+                // show undo and set timeout to actually delete this item
+                this.trigger('trashed');
+                this.removeTodo();               
             }
         }, this));
     },
 
+    // removes the todo from the server
     removeTodo: function(e) {
-
+        this.trigger('removed');
         this.model.destroy();
-        this.remove();
+
+        // this.remove();  // keep this element on screen so we can "undo" the trash
     },
 
     render: function() {

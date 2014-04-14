@@ -1,0 +1,61 @@
+@keyframes fadein {
+	0%   { opacity: 0; }
+	100% { opacity: 1; }
+}
+
+#notifications {
+	position: fixed;
+	bottom: $footerHeight + 20;
+	left: 0;
+	right: 0;
+	margin: 0;
+	padding: 0;
+
+	li {
+		list-style: none;
+		max-width: $maxWidth - 50px;
+		margin: auto;
+		opacity: 1;
+
+		transition: all .5s;
+
+		&.trash {	
+			opacity: 0; 
+		}
+
+		.notification {
+
+			&.undo {
+
+				display: flex;
+
+				animation: fadein .5s;
+
+				color: white;
+				margin-top: 10px;
+				border-radius: 20px;
+				background: rgba(3, 3, 3, .5);
+				padding: 10px;
+
+				.text {
+					display: flex;
+					align-items: center;
+					justify-content: center;
+					flex: 1 1 auto;
+					vertical-align: center;
+					padding-left: 10px;
+					
+				}
+
+				button {
+					flex: 0 0 auto;
+					background: none;
+					padding: 5px 20px;
+					border-left: 2px solid white;
+					border-radius: 0
+				}
+			}
+		}
+	}
+}
+

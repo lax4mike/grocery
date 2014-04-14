@@ -3,6 +3,7 @@ var gulp        = require('gulp');
 var sass        = require('gulp-ruby-sass');
 var plumber     = require('gulp-plumber');
 var browserify  = require('gulp-browserify');
+var handlebars  = require('browserify-handlebars');
 var gulpConnect = require('gulp-connect');
 var lr          = require('tiny-lr')();
 var reload      = require('gulp-livereload');
@@ -11,7 +12,7 @@ var prefix      = require('gulp-autoprefixer');
 
 var paths = {
     dist: "dist/",
-    css: "app/scss/items.scss",
+    css: "app/scss/app.scss",
     js: "app/js/app.js",
     img: "app/img/**/*",
     html: ["app/*.htm", "app/favicon.ico"],
@@ -57,7 +58,9 @@ gulp.task('sass', function() {
 gulp.task('js', function() {
     return gulp.src("app/js/app.js")
         .pipe(plumber()) // handle errors
-        .pipe(browserify())
+        .pipe(browserify({
+            transform: [handlebars]
+        }))
         .pipe(gulp.dest(paths.assets + "/js/"))
         .pipe(reload(lr));
 });
@@ -75,7 +78,7 @@ gulp.task('img', function() {
 gulp.task('watch', function() {
     gulp.watch('app/scss/*.scss', ['sass']);
     gulp.watch('app/*.htm', ['html']);
-    gulp.watch('app/js/**/*.js', ['js']);
+    gulp.watch(['app/js/**/*.js', 'app/js/**/*/handlebars'], ['js']);
 });
 
 // Default Task
