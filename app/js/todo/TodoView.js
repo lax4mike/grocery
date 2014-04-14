@@ -62,7 +62,7 @@ var TodoView = module.exports = Backbone.View.extend({
         this.trigger('removed');
         this.model.destroy();
 
-        // this.remove();  // keep this element on screen so we can "undo" the trash
+        this.remove(); 
     },
 
     render: function() {

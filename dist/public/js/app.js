@@ -131,6 +131,8 @@ var ApplicationView = Backbone.View.extend({
     // given an array of TodoModels, create the undo notification
     createUndo: function(undoTodos){
 
+        if (undoTodos.length == 0) return;
+
         var text = (undoTodos.length == 1) ? 
             undoTodos[0].get('text') : 
             undoTodos.length + " items";
@@ -158,7 +160,7 @@ var ApplicationView = Backbone.View.extend({
                 model.unset('_id'); // undo id so backbone thinks it needs to POST (create) instead of PUT (update)
                 todos.add(model);
                 model.save(); 
-            })
+            });
             
         });
 
@@ -344,7 +346,7 @@ var TodoView = module.exports = Backbone.View.extend({
         this.trigger('removed');
         this.model.destroy();
 
-        // this.remove();  // keep this element on screen so we can "undo" the trash
+        this.remove(); 
     },
 
     render: function() {
