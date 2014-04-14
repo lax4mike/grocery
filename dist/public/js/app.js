@@ -27,7 +27,7 @@ var ApplicationView = Backbone.View.extend({
         this.$notifications = $('#notifications');
 
         this.listenTo(todos, "add", this.renderOneItem);
-        this.listenTo(notifications, "add", this.renderOneNotification);
+        this.listenTo(notifications, "add", this.renderUndoNotification);
 
         todos.fetch();
 
@@ -79,14 +79,16 @@ var ApplicationView = Backbone.View.extend({
 
     clearCompleted: function() {
 
-        var animateClear = function(){
+        var animateClear = _.bind(function(){
 
             var completed = todos.where({done: true});
 
             completed.forEach(function(todo){
                 todo.trigger('trash');
             });
-        }
+
+            this.createUndo(completed);
+        }, this);
 
         if ($('#hide-completed').is(":checked")){
             $('#hide-completed').attr('checked', false);
@@ -113,15 +115,8 @@ var ApplicationView = Backbone.View.extend({
         todoView.$el.addClass('collapsed');
 
         // show undo notification if this item is trashed
-        this.listenTo(todoView, "trashed", function(e){
-
-            var undoModel = new NotificationModel({
-                text: todoView.model.get('text') + " deleted.",
-                buttonText: "undo",
-                todoView: todoView
-            });
-            notifications.add(undoModel);
-
+        this.listenTo(todoView, "removeClicked", function(e){
+            this.createUndo([todoView.model]);
         });
 
         this.$list.prepend(todoView.$el);
@@ -133,17 +128,38 @@ var ApplicationView = Backbone.View.extend({
         
     },
 
-    renderOneNotification: function(model) {
+    // given an array of TodoModels, create the undo notification
+    createUndo: function(undoTodos){
+
+        var text = (undoTodos.length == 1) ? 
+            undoTodos[0].get('text') : 
+            undoTodos.length + " items";
+        text += " deleted";
+
+        var undoModel = new NotificationModel({
+            text: text,
+            buttonText: "undo",
+            todos: undoTodos
+        });
+        notifications.add(undoModel);
+
+    },
+
+    renderUndoNotification: function(model) {
 
         var undoView = new NotificationView({model: model});
         undoView.render();
 
         // on button click, undo item trash
         this.listenTo(undoView, 'buttonClick', function(e){
-            var todoModel = undoView.model.get('todoView').model;
-            todoModel.unset('_id'); // undo id so backbone thinks it needs to POST (create) instead of PUT (update)
-            todos.add(todoModel);
-            todoModel.save(); 
+            var undoTodos = undoView.model.get('todos');
+
+            undoTodos.forEach(function(model){ 
+                model.unset('_id'); // undo id so backbone thinks it needs to POST (create) instead of PUT (update)
+                todos.add(model);
+                model.save(); 
+            })
+            
         });
 
         this.$notifications.prepend(undoView.$el);
@@ -172,18 +188,18 @@ var NotificationCollection = module.exports = Backbone.Collection.extend({
 }); 
 },{"./NotificationModel.js":3,"backbone":10}],3:[function(require,module,exports){
 var Backbone = require('backbone');
-var itemView = require('../todo/TodoView.js');
 
 // Notification Model
 var NotificationModel = module.exports = Backbone.Model.extend({
 
     defaults: {
         text: '',
-        buttonText: ''
+        buttonText: '',
+        todos: null // collection of TodoModels
     },
 
 });
-},{"../todo/TodoView.js":8,"backbone":10}],4:[function(require,module,exports){
+},{"backbone":10}],4:[function(require,module,exports){
 var _ = require('underscore');
 var Backbone = require('backbone');
 
@@ -287,7 +303,7 @@ var TodoView = module.exports = Backbone.View.extend({
 
     events: {
         'change input[type=checkbox]': 'toggleCheckbox',
-        'click .remove': 'trashTodo',
+        'click .remove': 'removeClicked',
     },
 
     updateCheckbox: function(e) {
@@ -299,6 +315,11 @@ var TodoView = module.exports = Backbone.View.extend({
         var checked = this.updateCheckbox();
         this.model.set("done", checked);
         this.model.save();
+    },
+
+    removeClicked: function(e) {
+        this.trigger('removeClicked');
+        this.trashTodo();
     },
 
     // animation
@@ -317,10 +338,6 @@ var TodoView = module.exports = Backbone.View.extend({
             }
         }, this));
     },
-
-    // cancelTrash: function(e) { 
-    //     this.model.save();
-    // },
 
     // removes the todo from the server
     removeTodo: function(e) {
