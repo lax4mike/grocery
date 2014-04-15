@@ -47,12 +47,13 @@ var TodoView = module.exports = Backbone.View.extend({
         var transitions = 0;
 
         this.$el.on("transitionend webkitTransitionEnd OTransitionEnd", _.bind(function(){ 
-            // this animation is 2 transitions (translateX(), height)
-            if (++transitions >= 2){
+
+            // if we've shrunk this element (ie. trashed)
+            if (parseInt(this.$el.css('height')) == 0){
 
                 // show undo and set timeout to actually delete this item
                 this.trigger('trashed');
-                this.removeTodo();               
+                this.removeTodo();
             }
         }, this));
     },
