@@ -16,7 +16,7 @@ var NotificationView = module.exports = Backbone.View.extend({
 
     buttonClick: function() {
     	this.trigger('buttonClick');
-    	this.remove();
+    	this.trash();
     },
 
     trash: function(){

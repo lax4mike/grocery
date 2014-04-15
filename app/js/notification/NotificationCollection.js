@@ -55,6 +55,7 @@ var NotificationCollection = module.exports = Backbone.Collection.extend({
 
         var undoView = new NotificationView({model: model});
         undoView.render();
+        undoView.$el.addClass('collapsed');
 
 	    // on button click, undo item trash
         this.listenTo(undoView, 'buttonClick', _.bind(function(e){
@@ -70,6 +71,11 @@ var NotificationCollection = module.exports = Backbone.Collection.extend({
         
 
         this.$notifications.append(undoView.$el);
+
+        // hack to make it look collapsed
+        setTimeout(function(){
+            undoView.$el.removeClass('collapsed');
+        }, 0);
 
         setTimeout(function(){
             undoView.trash();

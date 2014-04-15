@@ -1,3 +1,160 @@
+#todo-list {
+  padding: 0;
+  margin: 0;
+  overflow: hidden;
+}
+#todo-list.hide li.checked {
+  min-height: 0;
+  max-height: 0;
+  border-width: 0;
+}
+#todo-list.hide li.checked .remove {
+  display: none;
+}
+#todo-list li {
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -ms-flex-align: center;
+  align-items: center;
+  position: relative;
+  border-bottom: 1px solid #e3e3e3;
+  background: white;
+  list-style: none;
+  -webkit-transition: all .5s, max-height .25s, min-height .25s;
+  transition: all .5s, max-height .25s, min-height .25s;
+  position: relative;
+  min-height: 40px;
+  max-height: 6em;
+  -webkit-transform: translateX(0);
+  -ms-transform: translateX(0);
+  transform: translateX(0);
+  overflow: hidden;
+}
+#todo-list li label {
+  -webkit-flex: 1 1 auto;
+  -ms-flex: 1 1 auto;
+  flex: 1 1 auto;
+  padding: 10px;
+  font-size: 16px;
+}
+#todo-list li.checked {
+  color: #C9D3E1;
+}
+#todo-list li.checked .todo-text {
+  text-decoration: line-through;
+}
+#todo-list li.checked .remove {
+  display: block;
+}
+#todo-list li.trash {
+  -webkit-transition: -webkit-transform .2s ease-in, max-height .5s .2s;
+  transition: transform .2s ease-in, max-height .5s .2s;
+  -webkit-transform: translateX(100%);
+  -ms-transform: translateX(100%);
+  transform: translateX(100%);
+  min-height: 0;
+  max-height: 0;
+}
+#todo-list li.collapsed {
+  min-height: 0;
+  max-height: 0;
+}
+#todo-list li .remove {
+  -webkit-flex: 0 0 auto;
+  -ms-flex: 0 0 auto;
+  flex: 0 0 auto;
+  display: none;
+  cursor: pointer;
+  padding: 10px 10px 10px 20px;
+  width: 18px;
+  min-height: 18px;
+  background: url("../img/x.png") 20px center no-repeat;
+}
+
+@-webkit-keyframes fadein {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes fadein {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+#notifications {
+  position: fixed;
+  bottom: 58px;
+  left: 0;
+  right: 0;
+  margin: 0;
+  padding: 0;
+}
+#notifications li {
+  list-style: none;
+  max-width: 550px;
+  margin: auto;
+  overflow: hidden;
+  opacity: 1;
+  max-height: 6em;
+  -webkit-transition: all .5s;
+  transition: all .5s;
+}
+#notifications li.trash {
+  opacity: 0;
+  max-height: 0;
+}
+#notifications li.collapsed {
+  max-height: 0;
+}
+#notifications li .notification.undo {
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-animation: fadein .5s;
+  animation: fadein .5s;
+  color: white;
+  margin-top: 10px;
+  border-radius: 20px;
+  background: rgba(3, 3, 3, 0.5);
+  padding: 10px;
+}
+#notifications li .notification.undo .text {
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-flex: 1 1 auto;
+  -ms-flex: 1 1 auto;
+  flex: 1 1 auto;
+  vertical-align: center;
+  padding-left: 10px;
+}
+#notifications li .notification.undo button {
+  -webkit-flex: 0 0 auto;
+  -ms-flex: 0 0 auto;
+  flex: 0 0 auto;
+  background: none;
+  padding: 5px 20px;
+  border-left: 2px solid white;
+  border-radius: 0;
+}
+
 html {
   height: 100%;
 }
@@ -106,107 +263,14 @@ input[type=checkbox]:checked:hover::before {
   background-position: -60px;
 }
 
-#todo-list {
-  padding: 0;
-  margin: 0;
-  overflow: hidden;
+@media screen and (max-width: 480px) {
+  header #todo-add .small {
+    display: inline-block;
+  }
+  header #todo-add .large {
+    display: none;
+  }
 }
-#todo-list.hide li.checked {
-  min-height: 0;
-  max-height: 0;
-  border-width: 0;
-}
-#todo-list.hide li.checked .remove {
-  display: none;
-}
-#todo-list li {
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -ms-flex-align: center;
-  align-items: center;
-  position: relative;
-  border-bottom: 1px solid #e3e3e3;
-  background: white;
-  list-style: none;
-  -webkit-transition: all .5s, max-height .25s, min-height .25s;
-  transition: all .5s, max-height .25s, min-height .25s;
-  position: relative;
-  min-height: 40px;
-  max-height: 6em;
-  -webkit-transform: translateX(0);
-  -ms-transform: translateX(0);
-  transform: translateX(0);
-  overflow: hidden;
-}
-#todo-list li label {
-  -webkit-flex: 1 1 auto;
-  -ms-flex: 1 1 auto;
-  flex: 1 1 auto;
-  padding: 10px;
-  font-size: 16px;
-}
-#todo-list li.checked {
-  color: #C9D3E1;
-}
-#todo-list li.checked .todo-text {
-  text-decoration: line-through;
-}
-#todo-list li.checked .remove {
-  display: block;
-}
-#todo-list li.trash {
-  -webkit-transition: -webkit-transform .2s ease-in, max-height .5s .2s;
-  transition: transform .2s ease-in, max-height .5s .2s;
-  -webkit-transform: translateX(100%);
-  -ms-transform: translateX(100%);
-  transform: translateX(100%);
-  min-height: 0;
-  max-height: 0;
-}
-#todo-list li.collapsed {
-  min-height: 0;
-  max-height: 0;
-}
-#todo-list li .remove {
-  -webkit-flex: 0 0 auto;
-  -ms-flex: 0 0 auto;
-  flex: 0 0 auto;
-  display: none;
-  cursor: pointer;
-  padding: 10px 10px 10px 20px;
-  width: 18px;
-  min-height: 18px;
-  background: url("../img/x.png") 20px center no-repeat;
-}
-
-footer {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-}
-footer #controls {
-  max-width: 600px;
-  margin: auto;
-  background: -webkit-gradient(linear, left top, left bottom, from(rgba(253, 253, 253, 0.5)), to(rgba(240, 240, 240, 0.5)));
-  background: -webkit-linear-gradient(top, rgba(253, 253, 253, 0.5), rgba(240, 240, 240, 0.5));
-  background: linear-gradient(top, rgba(253, 253, 253, 0.5), rgba(240, 240, 240, 0.5));
-  border-top: 1px solid #e3e3e3;
-  font-size: 16px;
-  text-align: right;
-  height: 38px;
-  line-height: 38px;
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
-  padding: 0 10px;
-}
-footer #controls #clear-completed {
-  padding: 2px 6px 3px;
-}
-
 button {
   appearance: none;
   margin: 0;
@@ -225,85 +289,32 @@ button {
   border-radius: 6px;
 }
 
-@media screen and (max-width: 480px) {
-  header #todo-add .small {
-    display: inline-block;
-  }
-  header #todo-add .large {
-    display: none;
-  }
-}
-@-webkit-keyframes fadein {
-  0% {
-    opacity: 0;
-  }
-
-  100% {
-    opacity: 1;
-  }
-}
-@keyframes fadein {
-  0% {
-    opacity: 0;
-  }
-
-  100% {
-    opacity: 1;
-  }
-}
-#notifications {
+footer {
   position: fixed;
-  bottom: 58px;
+  bottom: 0;
   left: 0;
   right: 0;
-  margin: 0;
-  padding: 0;
 }
-#notifications li {
-  list-style: none;
-  max-width: 550px;
+footer #controls {
+  max-width: 600px;
   margin: auto;
-  opacity: 1;
-  -webkit-transition: all .5s;
-  transition: all .5s;
+  background: -webkit-gradient(linear, left top, left bottom, from(rgba(253, 253, 253, 0.75)), to(rgba(240, 240, 240, 0.75)));
+  background: -webkit-linear-gradient(top, rgba(253, 253, 253, 0.75), rgba(240, 240, 240, 0.75));
+  background: linear-gradient(top, rgba(253, 253, 253, 0.75), rgba(240, 240, 240, 0.75));
+  border-top: 1px solid #e3e3e3;
+  font-size: 16px;
+  text-align: right;
+  height: 38px;
+  line-height: 38px;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  padding: 0 10px;
 }
-#notifications li.trash {
-  opacity: 0;
+footer #controls #clear-completed {
+  padding: 2px 6px 3px;
+  background: #900;
 }
-#notifications li .notification.undo {
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-animation: fadein .5s;
-  animation: fadein .5s;
-  color: white;
-  margin-top: 10px;
-  border-radius: 20px;
-  background: rgba(3, 3, 3, 0.5);
-  padding: 10px;
-}
-#notifications li .notification.undo .text {
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  -webkit-flex: 1 1 auto;
-  -ms-flex: 1 1 auto;
-  flex: 1 1 auto;
-  vertical-align: center;
-  padding-left: 10px;
-}
-#notifications li .notification.undo button {
-  -webkit-flex: 0 0 auto;
-  -ms-flex: 0 0 auto;
-  flex: 0 0 auto;
-  background: none;
-  padding: 5px 20px;
-  border-left: 2px solid white;
-  border-radius: 0;
+footer #controls #clear-completed:hover {
+  background: #a00;
 }

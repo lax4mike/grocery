@@ -9,3 +9,170 @@ $blue: #1e7fad;
 
 @import 'items.scss';
 @import 'notifications.scss';
+
+html {
+	height: 100%;
+}
+
+body {
+	display: flex;
+	flex-direction: column;
+	align-content: stretch;
+
+	position: relative;
+	padding: 0;
+	margin: 0 auto;
+	min-height: 100%;
+
+	color: #333;
+  	font-family: verdana, arial, helvetica, sans-serif;
+
+	max-width: $maxWidth;
+
+	border-left: 1px solid $borderColor;
+	border-right: 1px solid $borderColor;
+	
+}
+
+header {
+
+	display: flex;
+	flex: 0 0 auto;
+
+	padding: 10px;
+	background: linear-gradient(top, #fdfdfd, #f0f0f0);
+	border-bottom: 1px solid $borderColor;
+	
+	#todo-add {
+
+		width: 100%;
+
+		display: flex;
+		flex: 1;
+
+		.todo-text {
+			flex: 1 0 auto;
+			padding: 10px;
+			font-size: 16px;
+			font-family: inherit;
+			margin: 0;
+			border: 1px solid $borderColor;
+		
+			border-top-left-radius: $radius;
+			border-bottom-left-radius: $radius;
+
+		}
+		button.submit {
+			border-top-left-radius: 0;
+			border-bottom-left-radius: 0;
+			background: $blue;
+			flex: 0 0 auto;
+		}
+
+		.small {
+			display: none;
+			width: 18px;
+			height: 18px;
+			// background: url("+.png") no-repeat;
+		}
+
+	} // #todo-add
+
+} // header
+
+main {
+	padding-bottom: $footerHeight;
+	background: $background;
+	flex: 1 0 auto;
+}
+
+// fancy checkboxes
+input[type=checkbox] {
+	visibility: hidden;
+	vertical-align: middle;
+	display: inline-block;
+	width: 20px;
+	height: 20px;
+	margin: 0;
+
+	&::before {
+		content: "";
+		background: url(../img/blue.png) no-repeat;
+		background-position: -0px;
+		display: inline-block;
+		width: inherit;
+		height: inherit;
+		visibility: visible;	
+	}
+	
+	&:hover::before {
+		background-position: -20px;
+	}
+
+	&:checked::before {
+		background-position: -40px;
+	}
+	&:checked:hover::before {
+		background-position: -60px;
+	}
+} 
+
+@media screen and (max-width: 480px) {
+	header #todo-add {
+		.small {
+			display: inline-block;
+		}
+		.large {
+			display: none;
+		}
+	}
+}
+
+
+button {
+	appearance: none;
+	margin: 0;
+	min-width: 45px;
+	border: none;
+	box-sizing: border-box;
+	background: linear-gradient(top, #aaa, #bbb);
+	color: white;
+	padding: 10px;
+	font-size: 16px;
+	cursor: pointer;
+	border-radius: $radius;
+}
+
+
+footer {
+	// display: flex;
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	
+	#controls {
+		max-width: $maxWidth;
+		margin: auto;
+		background: linear-gradient(top, rgba(253,253,253, .75), rgba(240, 240, 240, .75));
+		border-top: 1px solid $borderColor;
+		font-size: 16px;
+		text-align: right;
+
+		height: $footerHeight;
+		line-height: $footerHeight;
+		box-sizing: border-box;
+
+		padding: 0 10px;
+
+		#clear-completed {
+			padding: 2px 6px 3px;
+			background: #900;
+			&:hover {
+				background: #a00;
+			}
+		}
+	}
+	
+	
+}
