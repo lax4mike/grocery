@@ -6,14 +6,19 @@ Backbone.$ = $;
 
 var TodoCollection = require('./todo/TodoCollection.js');
 var TodoModel = require('./todo/TodoModel.js');
-var TodoView = require('./todo/TodoView.js');
 
 var NotificationCollection = require('./notification/NotificationCollection.js');
-var NotificationView = require('./notification/NotificationView.js');
-var NotificationModel = require('./notification/NotificationModel.js');
 
-var todos = new TodoCollection();
-var notifications = new NotificationCollection();
+var todos = new TodoCollection([], {
+    selector: "#todo-list"
+});
+
+var notifications =  new NotificationCollection([], {
+    selector: '#notifications'
+});
+
+todos.addNotificationCollection(notifications);
+notifications.addTodoCollection(todos);
 
 var ApplicationView = Backbone.View.extend({
 
@@ -23,17 +28,8 @@ var ApplicationView = Backbone.View.extend({
 
         this.$todoText = $('#todo-add .todo-text');
         this.$list = $('#todo-list');
-        this.$notifications = $('#notifications');
-
-        this.listenTo(todos, "add", this.renderOneItem);
-        this.listenTo(notifications, "add", this.renderUndoNotification);
 
         todos.fetch();
-
-        // var undoModel = new NotificationModel({
-        //     text: "POOP deleted."
-        // });
-        // notifications.add(undoModel);
 
     },
 
@@ -86,7 +82,8 @@ var ApplicationView = Backbone.View.extend({
                 todo.trigger('trash');
             });
 
-            this.createUndo(completed);
+            notifications.createUndo(completed);
+
         }, this);
 
         if ($('#hide-completed').is(":checked")){
@@ -105,70 +102,8 @@ var ApplicationView = Backbone.View.extend({
 
         $('#todo-list').toggleClass('hide', $('#hide-completed').is(":checked"));
 
-    },
-
-    renderOneItem: function(model) {
-        
-        var todoView = new TodoView({model: model});
-        todoView.render();
-        todoView.$el.addClass('collapsed');
-
-        // show undo notification if this item is trashed
-        this.listenTo(todoView, "removeClicked", function(e){
-            this.createUndo([todoView.model]);
-        });
-
-        this.$list.prepend(todoView.$el);
-
-        // hack to make it look collapsed
-        setTimeout(function(){
-            todoView.$el.removeClass('collapsed');
-        }, 0);
-        
-    },
-
-    // given an array of TodoModels, create the undo notification
-    createUndo: function(undoTodos){
-
-        if (undoTodos.length == 0) return;
-
-        var text = (undoTodos.length == 1) ? 
-            undoTodos[0].get('text') : 
-            undoTodos.length + " items";
-        text += " deleted";
-
-        var undoModel = new NotificationModel({
-            text: text,
-            buttonText: "undo",
-            todos: undoTodos
-        });
-        notifications.add(undoModel);
-
-    },
-
-    renderUndoNotification: function(model) {
-
-        var undoView = new NotificationView({model: model});
-        undoView.render();
-
-        // on button click, undo item trash
-        this.listenTo(undoView, 'buttonClick', function(e){
-            var undoTodos = undoView.model.get('todos');
-
-            undoTodos.forEach(function(model){ 
-                model.unset('_id'); // undo id so backbone thinks it needs to POST (create) instead of PUT (update)
-                todos.add(model);
-                model.save(); 
-            });
-            
-        });
-
-        this.$notifications.prepend(undoView.$el);
-
-        setTimeout(function(){
-            undoView.trash();
-        }, 10000);
     }
+
 
 }); // ApplicationView
 
