@@ -50,7 +50,7 @@ module.exports = function(app){
     };
      
     this.addItem = function(req, res) {
-        console.log("REQUEST: ", req);
+
         var item = req.body;
         console.log('Adding item: ' + JSON.stringify(item));
 
@@ -111,11 +111,11 @@ module.exports = function(app){
         });
     }
 
-    app.get('/items', this.findAll);
-    app.get('/items/:id', this.findById);
-    app.post('/items', this.addItem);
-    app.put('/items/:id', this.updateItem);
-    app.delete('/items/:id', this.deleteItem);
+        app.get('/items', this.findAll);
+        app.get('/items/:id', this.findById);
+        app.post('/items', this.addItem);
+        app.put('/items/:id', this.updateItem);
+        app.delete('/items/:id', this.deleteItem);
 
 
 
