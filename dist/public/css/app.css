@@ -311,6 +311,9 @@ footer #controls {
   box-sizing: border-box;
   padding: 0 10px;
 }
+footer #controls label {
+  cursor: pointer;
+}
 footer #controls #clear-completed {
   padding: 2px 6px 3px;
   background: #900;

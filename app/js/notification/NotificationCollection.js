@@ -7,29 +7,29 @@ var NotificationView = require('./NotificationView.js');
 // Notification Collection
 var NotificationCollection = module.exports = Backbone.Collection.extend({
 
-	initialize: function(models, options) {
+    initialize: function(models, options) {
 
-	    this.$notifications = $(options.selector); 
+        this.$notifications = $(options.selector); 
 
-	    this.listenTo(this, "add", this.renderUndoNotification);
+        this.listenTo(this, "add", this.renderUndoNotification);
   
-	    return this;
-	},
+        return this;
+    },
 
     model: NotificationModel, 
 
     addTodoCollection: function(todos){
-    	this.todos = todos;
+        this.todos = todos;
     },
 
     getTodos: function(){
 
-    	if (!this.todos){
-    		console.log("uh ohs");
-    		return;
-    	}
-
-    	return this.todos;
+        if (!this.todos){
+            console.log("uh ohs");
+            return;
+        }
+        
+        return this.todos;
     },
 
     // given an array of TodoModels, create the undo notification
@@ -57,7 +57,7 @@ var NotificationCollection = module.exports = Backbone.Collection.extend({
         undoView.render();
         undoView.$el.addClass('collapsed');
 
-	    // on button click, undo item trash
+        // on button click, undo item trash
         this.listenTo(undoView, 'buttonClick', _.bind(function(e){
             var undoTodos = undoView.model.get('todos');
 
@@ -72,7 +72,7 @@ var NotificationCollection = module.exports = Backbone.Collection.extend({
 
         this.$notifications.append(undoView.$el);
 
-        // hack to make it look collapsed
+        // run this on the next frame, http://wilsonpage.co.uk/preventing-layout-thrashing/
         setTimeout(function(){
             undoView.$el.removeClass('collapsed');
         }, 0);

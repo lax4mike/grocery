@@ -154,7 +154,7 @@ footer {
 	#controls {
 		max-width: $maxWidth;
 		margin: auto;
-		background: linear-gradient(top, rgba(253,253,253, .75), rgba(240, 240, 240, .75));
+		background: linear-gradient(top, rgba(253, 253, 253, .75), rgba(240, 240, 240, .75));
 		border-top: 1px solid $borderColor;
 		font-size: 16px;
 		text-align: right;
@@ -164,6 +164,10 @@ footer {
 		box-sizing: border-box;
 
 		padding: 0 10px;
+
+		label {
+			cursor: pointer;
+		}
 
 		#clear-completed {
 			padding: 2px 6px 3px;
