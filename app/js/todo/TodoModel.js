@@ -8,6 +8,8 @@ var TodoModel = module.exports = Backbone.Model.extend({
         done: false
     },
 
-    idAttribute: "_id"
+    idAttribute: "_id",
+
+    // "trash" event
 
 });

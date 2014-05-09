@@ -17,11 +17,11 @@ app.get('/', function(req, res){
     res.sendfile(__dirname + '/public/index.htm');
 });
 
-// var ItemsIO = require('./routes/items.io.js');
-// var items = new ItemsIO(io);
+var ItemsIO = require('./routes/items.io.js');
+var items = new ItemsIO(io);
 
-var Items = require('./routes/items.js');
-var items = new Items(app);
+// var Items = require('./routes/items.js');
+// var items = new Items(app);
 
 
 server.listen(3000);

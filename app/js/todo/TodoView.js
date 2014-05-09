@@ -12,6 +12,7 @@ var TodoView = module.exports = Backbone.View.extend({
     initialize: function(){
 
         this.listenTo(this.model, 'trash', this.trashTodo);
+        this.listenTo(this.model, 'change', this.render);
 
     },
 
