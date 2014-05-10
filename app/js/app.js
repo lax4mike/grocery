@@ -110,7 +110,10 @@ var ApplicationView = Backbone.View.extend({
                 todo.trigger('trash');
             });
 
-            notifications.createUndo(completed);
+            setTimeout(function(){
+                notifications.createUndo(completed);    
+            }, 1000);
+            
 
         }, this);
 
