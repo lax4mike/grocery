@@ -107,15 +107,15 @@
   overflow: hidden;
   opacity: 1;
   max-height: 6em;
-  -webkit-transition: all .5s;
-  transition: all .5s;
+  -webkit-transition: all .5s, max-height .5s .3s;
+  transition: all .5s, max-height .5s .3s;
 }
 #notifications li.trash {
   opacity: 0;
   max-height: 0;
 }
 #notifications li.collapsed {
-  max-height: 0;
+  opacity: 0;
 }
 #notifications li .notification.undo {
   display: -webkit-flex;
@@ -124,7 +124,7 @@
   -webkit-animation: fadein .5s;
   animation: fadein .5s;
   color: white;
-  margin-top: 10px;
+  margin: 10px 3px 0;
   border-radius: 20px;
   background: rgba(3, 3, 3, 0.5);
   padding: 10px;

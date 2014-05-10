@@ -70,7 +70,7 @@ var NotificationCollection = module.exports = Backbone.Collection.extend({
         }, this));
         
 
-        this.$notifications.append(undoView.$el);
+        this.$notifications.prepend(undoView.$el);
 
         // run this on the next frame, http://wilsonpage.co.uk/preventing-layout-thrashing/
         setTimeout(function(){
