@@ -1,27 +1,30 @@
 var express = require('express'),
-	items   = require('./routes/items.js');
+    app     = express(),
+    server  = require('http').createServer(app);
 
+// setup socket.io
+var io = require('socket.io').listen(server);
+io.set('log level', 2); // https://github.com/LearnBoost/Socket.IO/wiki/Configuring-Socket.IO
 
-var app = express();
 app.configure(function () {
     app.use(express.logger('dev'));     /* 'default', 'short', 'tiny', 'dev' */
-    app.use(express.bodyParser());
+    app.use(express.json());  // for parsing json
     app.use(express.static(__dirname + '/public/'));
     app.use(express.favicon(__dirname + '/public/favicon.ico'));
 });
 
 app.get('/', function(req, res){
-	res.sendfile(__dirname + '/public/index.htm');
+    res.sendfile(__dirname + '/public/index.htm');
 });
 
-app.get('/items', items.findAll);
-app.get('/items/:id', items.findById);
-app.post('/items', items.addItem);
-app.put('/items/:id', items.updateItem);
-app.delete('/items/:id', items.deleteItem);
+var ItemsIO = require('./routes/items.io.js');
+var items = new ItemsIO(io);
+
+// var Items = require('./routes/items.js');
+// var items = new Items(app);
 
 
-app.listen(3000);
+server.listen(3000);
 console.log('Listening on port 3000...');
 
 module.exports = app;
